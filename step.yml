@@ -5,9 +5,9 @@ description: |-
 
   Uses Basic Auth over HTTPS.  You need to supply a username and password, and the host and port of your instance.
 
-website: https://github.com/...
-source_code_url: https://github.com/...
-support_url: https://github.com/.../issues
+website: https://github.com/Waracle/update-jira-bitrise-step
+source_code_url: https://github.com/Waracle/update-jira-bitrise-step
+support_url: https://github.com/Waracle/update-jira-bitrise-step/issues
 host_os_tags:
   - osx-10.10
 project_type_tags:
