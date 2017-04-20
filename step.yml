@@ -1,0 +1,68 @@
+title: "Add JIRA Comment Step"
+summary: Takes JIRA issue from branch and posts comment with build location.
+description: |-
+  Takes JIRA issue from branch and posts comment with build location.
+
+  Uses Basic Auth over HTTPS.  You need to supply a username and password, and the host and port of your instance.
+
+website: https://github.com/...
+source_code_url: https://github.com/...
+support_url: https://github.com/.../issues
+host_os_tags:
+  - osx-10.10
+project_type_tags:
+  - ios
+  - android
+  - xamarin
+type_tags:
+  - script
+is_requires_admin_user: true
+is_always_run: false
+is_skippable: false
+deps:
+  brew:
+  - name: git
+  - name: wget
+  apt_get:
+  - name: git
+  - name: wget
+run_if: ""
+inputs:
+  - JIRA_USER:
+    opts:
+      title: "JIRA User"
+      summary: The user to use to call the API
+      description: |
+        The user to use to call the API
+      is_expand: true
+      is_required: true
+      value_options: []
+  - JIRA_PASSWORD:
+    opts:
+      title: "JIRA Password"
+      summary: The password to use to call the API
+      description: |
+        The password to use to call the API
+      is_expand: true
+      is_required: true
+      value_options: []
+  - JIRA_HOST_PORT:
+    opts:
+      title: "JIRA Host and Port"
+      summary: The host and port to use for the API
+      description: |
+        The host and port to use for the API in the format of host:port, e.g. example.com:8080
+
+        You can omit the port if you use standard ports, e.g. example.com
+
+        If you do supply a port, it should be HTTPS enabled.
+      is_expand: true
+      is_required: true
+      value_options: []
+outputs:
+  - JIRA_ISSUE:
+    opts:
+      title: "JIRA_ISSUE"
+      summary: The JIRA_ISSUE that was detected, if any.
+      description: |
+        The JIRA_ISSUE that was detected, if any.
