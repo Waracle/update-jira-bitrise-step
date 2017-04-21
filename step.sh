@@ -33,4 +33,4 @@ envman add --key JIRA_ISSUE --value $JIRA_ISSUE
 export COMMENT_BODY="Build $BITRISE_BUILD_NUMBER at $BITRISE_BUILD_URL"
 echo $COMMENT_BODY
 
-echo curl -D- -u $JIRA_USER:$JIRA_PASSWORD -X POST -H "Content-Type: application/json" -d "{\"body\": \"$COMMENT_BODY\"}" https://$JIRA_HOST_PORT/rest/api/2/issue/$JIRA_ISSUE/comment
+curl -D- -u $JIRA_USER:$JIRA_PASSWORD -X POST -H "Content-Type: application/json" -d "{\"body\": \"$COMMENT_BODY\"}" https://$JIRA_HOST_PORT/rest/api/2/issue/$JIRA_ISSUE/comment
