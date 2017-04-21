@@ -18,7 +18,7 @@
 #  with a 0 exit code `bitrise` will register your Step as "successful".
 # Any non zero exit code will be registered as "failed" by `bitrise`.
 
-JIRA_ISSUE=`echo $GIT_BRANCH_NAME | egrep -o '[A-Z]+-[0-9]+'`
+JIRA_ISSUE=`echo $BITRISE_GIT_BRANCH | egrep -o '[A-Z]+-[0-9]+'`
 
 # If no issue number, abort
 if [ ! "$JIRA_ISSUE" ]; then
