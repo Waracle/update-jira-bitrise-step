@@ -7,6 +7,11 @@ app:
   - JIRA_USERNAME: $JIRA_USERNAME
   - JIRA_PASSWORD: $JIRA_PASSWORD
   - BITRISE_GIT_BRANCH: feature/DMMPRJCT-105
+  - BITRISE_BUILD_STATUS: 0
+  - BITRISE_BUILD_NUMBER: 1
+  - BITRISE_BUILD_URL: 'https://bitrise.io/builds/test'
+  - BITRISE_APP_TITLE: 'Test App'
+  - BITRISE_APP_URL: 'https://bitrise.io/apps/test'
   - BITRISE_STEP_ID: jira-add-comment
   - BITRISE_STEP_VERSION: 1.0.0
   - BITRISE_STEP_GIT_CLONE_URL: https://github.com/waracle/update-jira-bitrise-step
@@ -77,8 +82,17 @@ workflows:
         run_if: "true"
         inputs:
         - is_debug: "yes"
-        - jira_build_message: |
-            *[$BITRISE_APP_TITLE|$BITRISE_APP_URL]* build *[$BITRISE_BUILD_NUMBER|$BITRISE_BUILD_URL]* is now available:
+        - jira_comment: |
+            *[$BITRISE_APP_TITLE|$BITRISE_APP_URL]* build *[$BITRISE_BUILD_NUMBER|$BITRISE_BUILD_URL]* built Successfully:
+            ||Build number|$BITRISE_BUILD_NUMBER|
+            ||Author|$GIT_CLONE_COMMIT_AUTHOR_NAME|
+            ||Branch|$BITRISE_GIT_BRANCH|
+            ||Commit hash|$GIT_CLONE_COMMIT_HASH|
+            ||Commit message|$GIT_CLONE_COMMIT_MESSAGE_SUBJECT|
+
+            [Show build details|$BITRISE_BUILD_URL]
+        - jira_comment_error: |
+            *[$BITRISE_APP_TITLE|$BITRISE_APP_URL]* build *[$BITRISE_BUILD_NUMBER|$BITRISE_BUILD_URL]* Failed to build:
             ||Build number|$BITRISE_BUILD_NUMBER|
             ||Author|$GIT_CLONE_COMMIT_AUTHOR_NAME|
             ||Branch|$BITRISE_GIT_BRANCH|

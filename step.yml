@@ -58,8 +58,28 @@ inputs:
       is_expand: true
       is_required: true
 
-  - jira_build_message: |-
-      *$BITRISE_APP_TITLE* build *$BITRISE_BUILD_NUMBER* is now available:
+  - jira_comment: |-
+      *[$BITRISE_APP_TITLE|$BITRISE_APP_URL]* build *[$BITRISE_BUILD_NUMBER|$BITRISE_BUILD_URL]* built successfully:
+
+      ||Build number|$BITRISE_BUILD_NUMBER|
+      ||Author|$GIT_CLONE_COMMIT_AUTHOR_NAME|
+      ||Branch|$BITRISE_GIT_BRANCH|
+      ||Commit hash|$GIT_CLONE_COMMIT_HASH|
+      ||Commit message|$GIT_CLONE_COMMIT_MESSAGE_SUBJECT|
+
+      [Show build details|$BITRISE_BUILD_URL]
+    opts:
+      category: Config
+      title: "Build message"
+      summary: "The content of the build message that will be posted"
+      description: |-
+        The content of the build message that will be posted.
+        You can use [markdown](https://jira.atlassian.com/secure/WikiRendererHelpAction.jspa?section=all)
+      is_expand: true
+      is_required: true
+  - jira_comment_error: |-
+      *[$BITRISE_APP_TITLE|$BITRISE_APP_URL]* build *[$BITRISE_BUILD_NUMBER|$BITRISE_BUILD_URL]* failed to build:
+
       ||Build number|$BITRISE_BUILD_NUMBER|
       ||Author|$GIT_CLONE_COMMIT_AUTHOR_NAME|
       ||Branch|$BITRISE_GIT_BRANCH|

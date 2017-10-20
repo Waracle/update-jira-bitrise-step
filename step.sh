@@ -6,11 +6,17 @@ if [[ "${is_debug}" == 'yes' ]]; then
 	set -x
 fi
 
+# use the error comment field if build fails
+if [ ${BITRISE_BUILD_STATUS} != "0" ]; then
+    jira_comment="${jira_comment_error}";
+fi
+
 echo
 echo "JIRA Config:"
 echo "- url: $jira_url"
 echo "- user: $jira_user"
 echo "- password: $(if [ ! -z ${jira_password+x} ]; then echo "****"; fi)"
+echo "- comment: $jira_comment"
 
 # Required input validation
 if [[ "${jira_url}" == "" ]]; then
@@ -51,7 +57,7 @@ fi
 echo "Adding $JIRA_ISSUE to env. vars"
 envman add --key JIRA_ISSUE --value $JIRA_ISSUE
 
-res="$(curl --write-out %{response_code} --silent --output /dev/null -u $jira_user:$jira_password -X POST -H "Content-Type: application/json" -d "{\"body\": \"${jira_build_message//$'\n'/\n}\"}" https://${jira_url}/rest/api/2/issue/$JIRA_ISSUE/comment)"
+res="$(curl --write-out %{response_code} --silent --output /dev/null -u $jira_user:$jira_password -X POST -H "Content-Type: application/json" -d "{\"body\": \"${jira_comment//$'\n'/\n}\"}" https://${jira_url}/rest/api/2/issue/$JIRA_ISSUE/comment)"
 if test "$res" == "201"; then
     echo
     echo "--- Posted comment to jira successfully"
