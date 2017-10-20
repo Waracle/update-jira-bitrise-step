@@ -62,6 +62,7 @@ inputs:
       *[$BITRISE_APP_TITLE|$BITRISE_APP_URL]* build *[$BITRISE_BUILD_NUMBER|$BITRISE_BUILD_URL]* built successfully:
 
       ||Build number|$BITRISE_BUILD_NUMBER|
+      ||Workflow|$BITRISE_TRIGGERED_WORKFLOW_TITLE|
       ||Author|$GIT_CLONE_COMMIT_AUTHOR_NAME|
       ||Branch|$BITRISE_GIT_BRANCH|
       ||Commit hash|$GIT_CLONE_COMMIT_HASH|
@@ -81,6 +82,7 @@ inputs:
       *[$BITRISE_APP_TITLE|$BITRISE_APP_URL]* build *[$BITRISE_BUILD_NUMBER|$BITRISE_BUILD_URL]* failed to build:
 
       ||Build number|$BITRISE_BUILD_NUMBER|
+      ||Workflow|$BITRISE_TRIGGERED_WORKFLOW_TITLE|
       ||Author|$GIT_CLONE_COMMIT_AUTHOR_NAME|
       ||Branch|$BITRISE_GIT_BRANCH|
       ||Commit hash|$GIT_CLONE_COMMIT_HASH|
