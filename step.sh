@@ -42,9 +42,14 @@ fi
 
 
 echo
-echo "Extracting JIRA Issue number from branch: $BITRISE_GIT_BRANCH"
+echo "Extracting JIRA Issue number from branch: $BITRISE_GIT_BRANCH, or commit message: ${BITRISE_GIT_MESSAGE}"
 
 JIRA_ISSUE="$(echo $BITRISE_GIT_BRANCH | egrep -o '[A-Z]+-[0-9]+')"
+# If no issue number, check the commit message
+if [ ! "$JIRA_ISSUE" ]; then
+    # lets check the commit message
+    JIRA_ISSUE = "$(echo $BITRISE_GIT_MESSAGE | egrep -o '[A-Z]+-[0-9]+')"
+fi
 
 echo "Found '$JIRA_ISSUE'"
 
