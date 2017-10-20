@@ -28,41 +28,92 @@ deps:
   - name: wget
 run_if: ""
 inputs:
-  - JIRA_USER:
+  - jira_url: $JIRA_URL
     opts:
+      category: Config
+      title: "JIRA URL"
+      summary: "JIRA instance URL"
+      description: |-
+        JIRA instance URL (Ex: foobar.atlassian.net)
+      is_expand: true
+      is_required: true
+
+  - jira_user: $JIRA_USERNAME
+    opts:
+      category: Config
       title: "JIRA User"
-      summary: The user to use to call the API
-      description: |
+      summary: The user that will author the comment.  Needs to have REST API permissions
+      description: |-
         The user to use to call the API
       is_expand: true
       is_required: true
-      value_options: []
-  - JIRA_PASSWORD:
+
+  - jira_password: $JIRA_PASSWORD
     opts:
+      category: Config
       title: "JIRA Password"
       summary: The password to use to call the API
-      description: |
+      description: |-
         The password to use to call the API
       is_expand: true
       is_required: true
-      value_options: []
-  - JIRA_HOST_PORT:
+
+  - jira_comment: |-
+      *[$BITRISE_APP_TITLE|$BITRISE_APP_URL]* build *[$BITRISE_BUILD_NUMBER|$BITRISE_BUILD_URL]* built successfully:
+
+      ||Build number|$BITRISE_BUILD_NUMBER|
+      ||Workflow|$BITRISE_TRIGGERED_WORKFLOW_TITLE|
+      ||Author|$GIT_CLONE_COMMIT_AUTHOR_NAME|
+      ||Branch|$BITRISE_GIT_BRANCH|
+      ||Commit hash|$GIT_CLONE_COMMIT_HASH|
+      ||Commit message|$GIT_CLONE_COMMIT_MESSAGE_SUBJECT|
+
+      [Show build details|$BITRISE_BUILD_URL]
     opts:
-      title: "JIRA Host and Port"
-      summary: The host and port to use for the API
-      description: |
-        The host and port to use for the API in the format of host:port, e.g. example.com:8080
-
-        You can omit the port if you use standard ports, e.g. example.com
-
-        If you do supply a port, it should be HTTPS enabled.
+      category: Config
+      summary: "JIRA comment contents for successful builds"
+      summary: "The content of the build message that will be posted"
+      description: |-
+        The content of the JIRA comment that will be posted when the build succeeds.
+        You can use [markdown](https://jira.atlassian.com/secure/WikiRendererHelpAction.jspa?section=all)
       is_expand: true
       is_required: true
-      value_options: []
+  - jira_comment_error: |-
+      *[$BITRISE_APP_TITLE|$BITRISE_APP_URL]* build *[$BITRISE_BUILD_NUMBER|$BITRISE_BUILD_URL]* failed to build:
+
+      ||Build number|$BITRISE_BUILD_NUMBER|
+      ||Workflow|$BITRISE_TRIGGERED_WORKFLOW_TITLE|
+      ||Author|$GIT_CLONE_COMMIT_AUTHOR_NAME|
+      ||Branch|$BITRISE_GIT_BRANCH|
+      ||Commit hash|$GIT_CLONE_COMMIT_HASH|
+      ||Commit message|$GIT_CLONE_COMMIT_MESSAGE_SUBJECT|
+
+      [Show build details|$BITRISE_BUILD_URL]
+    opts:
+      category: Config
+      title: "Comment message (failed build)"
+      summary: "JIRA comment contents for failed builds"
+      description: |-
+        The content of the JIRA comment that will be posted if the build fails.
+        You can use [markdown](https://jira.atlassian.com/secure/WikiRendererHelpAction.jspa?section=all)
+      is_expand: true
+      is_required: true
+
+  - is_debug: "no"
+    opts:
+      category: Debug
+      description: |
+        If debug=yes the step will print debug infos about
+        the working dir, tmp file path, exit code, etc.
+      title: Debug print?
+      value_options:
+      - "no"
+      - "yes"
+
 outputs:
   - JIRA_ISSUE:
     opts:
       title: "JIRA_ISSUE"
       summary: The JIRA_ISSUE that was detected, if any.
-      description: |
+      description: |-
         The JIRA_ISSUE that was detected, if any.
