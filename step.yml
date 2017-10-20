@@ -71,10 +71,10 @@ inputs:
       [Show build details|$BITRISE_BUILD_URL]
     opts:
       category: Config
-      title: "Build message"
+      summary: "JIRA comment contents for successful builds"
       summary: "The content of the build message that will be posted"
       description: |-
-        The content of the build message that will be posted.
+        The content of the JIRA comment that will be posted when the build succeeds.
         You can use [markdown](https://jira.atlassian.com/secure/WikiRendererHelpAction.jspa?section=all)
       is_expand: true
       is_required: true
@@ -91,10 +91,10 @@ inputs:
       [Show build details|$BITRISE_BUILD_URL]
     opts:
       category: Config
-      title: "Build message"
-      summary: "The content of the build message that will be posted"
+      title: "Comment message (failed build)"
+      summary: "JIRA comment contents for failed builds"
       description: |-
-        The content of the build message that will be posted.
+        The content of the JIRA comment that will be posted if the build fails.
         You can use [markdown](https://jira.atlassian.com/secure/WikiRendererHelpAction.jspa?section=all)
       is_expand: true
       is_required: true
