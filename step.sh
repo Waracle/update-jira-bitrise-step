@@ -62,7 +62,8 @@ fi
 echo "Adding $JIRA_ISSUE to env. vars"
 envman add --key JIRA_ISSUE --value "${JIRA_ISSUE}"
 
-res="$(curl --write-out %{response_code} --silent --output /dev/null -u $jira_user:$jira_password -X POST -H "Content-Type: application/json" -d "{\"body\": \"${jira_comment//$'\n'/\n}\"}" https://${jira_url}/rest/api/2/issue/$JIRA_ISSUE/comment)"
+res="$(curl --write-out %{response_code} --silent --output /dev/null -u $jira_user:$jira_password -X POST -H "Content-Type: application/json" -d "{\"body\": \"${jira_comment}\"}" https://${jira_url}/rest/api/2/issue/$JIRA_ISSUE/comment)"
+#res="$(curl --write-out %{response_code} --silent --output /dev/null -u $jira_user:$jira_password -X POST -H "Content-Type: application/json" -d "{\"body\": \"${jira_comment//$'\n'/\n}\"}" https://${jira_url}/rest/api/2/issue/$JIRA_ISSUE/comment)"
 if test "$res" == "201"; then
     echo
     echo "--- Posted comment to jira successfully"
