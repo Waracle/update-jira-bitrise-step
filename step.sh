@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+#set -e
 set -o pipefail
 
 if [[ "${is_debug}" == 'yes' ]]; then
@@ -42,25 +42,25 @@ fi
 
 
 echo
-echo "Extracting JIRA Issue number from branch: $BITRISE_GIT_BRANCH, or commit message: ${BITRISE_GIT_MESSAGE}"
+echo "Extracting JIRA Issue number from branch: '$BITRISE_GIT_BRANCH', or commit message: '${BITRISE_GIT_MESSAGE}'"
 
-JIRA_ISSUE="$(echo $BITRISE_GIT_BRANCH | egrep -o '[A-Z]+-[0-9]+')"
+JIRA_ISSUE="$(echo "${BITRISE_GIT_BRANCH}" | egrep -o '[A-Z]+-[0-9]+')"
+
 # If no issue number, check the commit message
-if [ ! "$JIRA_ISSUE" ]; then
+if [ -z "${JIRA_ISSUE}" ]; then
     # lets check the commit message
-    JIRA_ISSUE = "$(echo $BITRISE_GIT_MESSAGE | egrep -o '[A-Z]+-[0-9]+')"
+    echo "No Issue number found in branch, checking commit message"
+    JIRA_ISSUE="$(echo $BITRISE_GIT_MESSAGE | egrep -o '[A-Z]+-[0-9]+')"
 fi
 
-echo "Found '$JIRA_ISSUE'"
-
 # If no issue number, abort
-if [ ! "$JIRA_ISSUE" ]; then
-	echo Branch does not contain JIRA issue
+if [ -z "${JIRA_ISSUE}" ]; then
+	echo "Branch or Commit message doesn't not contain JIRA issue"
 	exit 0
 fi
 
 echo "Adding $JIRA_ISSUE to env. vars"
-envman add --key JIRA_ISSUE --value $JIRA_ISSUE
+envman add --key JIRA_ISSUE --value "${JIRA_ISSUE}"
 
 res="$(curl --write-out %{response_code} --silent --output /dev/null -u $jira_user:$jira_password -X POST -H "Content-Type: application/json" -d "{\"body\": \"${jira_comment//$'\n'/\n}\"}" https://${jira_url}/rest/api/2/issue/$JIRA_ISSUE/comment)"
 if test "$res" == "201"; then
