@@ -1,1 +1,3 @@
 .bitrise*
+/.env
+/.envstore.yml
