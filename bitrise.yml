@@ -83,20 +83,24 @@ workflows:
         inputs:
         - is_debug: "yes"
         - jira_comment: |
-            *[$BITRISE_APP_TITLE|$BITRISE_APP_URL]* build *[$BITRISE_BUILD_NUMBER|$BITRISE_BUILD_URL]* built Successfully:
-            ||Build number|$BITRISE_BUILD_NUMBER|
-            ||Author|$GIT_CLONE_COMMIT_AUTHOR_NAME|
-            ||Branch|$BITRISE_GIT_BRANCH|
-            ||Commit hash|$GIT_CLONE_COMMIT_HASH|
-            ||Commit message|$GIT_CLONE_COMMIT_MESSAGE_SUBJECT|
+            *[$BITRISE_APP_TITLE|$BITRISE_APP_URL]* build *[$BITRISE_BUILD_NUMBER|$BITRISE_BUILD_URL]* is now available:
 
-            [Show build details|$BITRISE_BUILD_URL]
+            {panel:title=Bitrise|titleBGColor=#3bc3a3}
+            |Build number|[$BITRISE_BUILD_NUMBER|$BITRISE_BUILD_URL]|
+            |Author|$GIT_CLONE_COMMIT_AUTHOR_NAME|
+            |Branch|$BITRISE_GIT_BRANCH|
+            |Commit hash|[$GIT_REPOSITORY_URL/commits/$GIT_CLONE_COMMIT_HASH|$GIT_CLONE_COMMIT_HASH]|
+            |Commit message|$GIT_CLONE_COMMIT_MESSAGE_SUBJECT|
+            |PR|$PR|
+            {panel}
         - jira_comment_error: |
-            *[$BITRISE_APP_TITLE|$BITRISE_APP_URL]* build *[$BITRISE_BUILD_NUMBER|$BITRISE_BUILD_URL]* Failed to build:
-            ||Build number|$BITRISE_BUILD_NUMBER|
-            ||Author|$GIT_CLONE_COMMIT_AUTHOR_NAME|
-            ||Branch|$BITRISE_GIT_BRANCH|
-            ||Commit hash|$GIT_CLONE_COMMIT_HASH|
-            ||Commit message|$GIT_CLONE_COMMIT_MESSAGE_SUBJECT|
+            *[$BITRISE_APP_TITLE|$BITRISE_APP_URL]* build *[$BITRISE_BUILD_NUMBER|$BITRISE_BUILD_URL]* failed:
 
-            [Show build details|$BITRISE_BUILD_URL]
+            {panel:title=Bitrise|titleBGColor=#3bc3a3}
+            |Build number|[$BITRISE_BUILD_NUMBER|$BITRISE_BUILD_URL]|
+            |Author|$GIT_CLONE_COMMIT_AUTHOR_NAME|
+            |Branch|$BITRISE_GIT_BRANCH|
+            |Commit hash|[$GIT_REPOSITORY_URL/commits/$GIT_CLONE_COMMIT_HASH|$GIT_CLONE_COMMIT_HASH]|
+            |Commit message|$GIT_CLONE_COMMIT_MESSAGE_SUBJECT|
+            |PR|$PR|
+            {panel}

@@ -64,8 +64,13 @@ if command -v envman 2>/dev/null; then
     envman add --key JIRA_ISSUE --value "${JIRA_ISSUE}"
 fi
 
-#res="$(curl --write-out %{response_code} --silent --output /dev/null -u $jira_user:$jira_password -X POST -H "Content-Type: application/json" -d "{\"body\": \"${jira_comment}\"}" https://${jira_url}/rest/api/2/issue/$JIRA_ISSUE/comment)"
-res="$(curl --write-out %{response_code} --silent --output /dev/null -u $jira_user:$jira_password -X POST -H "Content-Type: application/json" -d "{\"body\": \"${jira_comment//$'\n'/\\n}\"}" https://${jira_url}/rest/api/2/issue/$JIRA_ISSUE/comment)"
+FORMATTED_JIRA_COMMENT="${jira_comment//$'\n'/\\n}"
+if [[ "${is_debug}" == "yes" ]]; then
+    echo
+    echo "Formatted JIRA COMMENT: ${FORMATTED_JIRA_COMMENT}"
+fi
+
+res="$(curl --write-out %{response_code} --silent --output /dev/null -u $jira_user:$jira_password -X POST -H "Content-Type: application/json" -d "{\"body\": \"${FORMATTED_JIRA_COMMENT}" https://${jira_url}/rest/api/2/issue/$JIRA_ISSUE/comment)"
 if test "$res" == "201"; then
     echo
     echo "--- Posted comment to jira successfully"
