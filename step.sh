@@ -64,13 +64,18 @@ if command -v envman 2>/dev/null; then
     envman add --key JIRA_ISSUE --value "${JIRA_ISSUE}"
 fi
 
-FORMATTED_JIRA_COMMENT="${jira_comment//$'\n'/\\n}"
+# remove empty lines from the comment, as it messes up the formatting in the jira ticket
+FORMATTED_JIRA_COMMENT="$(echo "${jira_comment}" | sed '/^$/d')"
+
+# convert new line characters to jira-readable newlines
+FORMATTED_JIRA_COMMENT="${FORMATTED_JIRA_COMMENT//$'\n'/\\n}"
+
 if [[ "${is_debug}" == "yes" ]]; then
     echo
     echo "Formatted JIRA COMMENT: ${FORMATTED_JIRA_COMMENT}"
 fi
 
-res="$(curl --write-out %{response_code} --silent --output /dev/null -u $jira_user:$jira_password -X POST -H "Content-Type: application/json" -d "{\"body\": \"${FORMATTED_JIRA_COMMENT}\"}" https://${jira_url}/rest/api/2/issue/$JIRA_ISSUE/comment)"
+#res="$(curl --write-out %{response_code} --silent --output /dev/null -u $jira_user:$jira_password -X POST -H "Content-Type: application/json" -d "{\"body\": \"${FORMATTED_JIRA_COMMENT}\"}" https://${jira_url}/rest/api/2/issue/$JIRA_ISSUE/comment)"
 if test "$res" == "201"; then
     echo
     echo "--- Posted comment to jira successfully"
