@@ -16,7 +16,7 @@ echo "JIRA Config:"
 echo "- url: $jira_url"
 echo "- user: $jira_user"
 echo "- password: $(if [ ! -z ${jira_password+x} ]; then echo "****"; fi)"
-echo "- comment: $jira_comment"
+echo "- comment: ${jira_comment}"
 
 # Required input validation
 if [[ "${jira_url}" == "" ]]; then
@@ -65,7 +65,10 @@ if command -v envman 2>/dev/null; then
 fi
 
 # remove empty lines from the comment, as it messes up the formatting in the jira ticket
-FORMATTED_JIRA_COMMENT="$(echo "${jira_comment}" | sed '/^$/d')"
+FORMATTED_JIRA_COMMENT="$(echo "${jira_comment}" | sed '/^\s*$/d')"
+
+# convert windows new line characters linux ones
+FORMATTED_JIRA_COMMENT="${FORMATTED_JIRA_COMMENT//$'\r\n'/\\n}"
 
 # convert new line characters to jira-readable newlines
 FORMATTED_JIRA_COMMENT="${FORMATTED_JIRA_COMMENT//$'\n'/\\n}"
@@ -75,6 +78,7 @@ if [[ "${is_debug}" == "yes" ]]; then
     echo "Formatted JIRA COMMENT: ${FORMATTED_JIRA_COMMENT}"
 fi
 
+echo "${FORMATTED_JIRA_COMMENT}"
 res="$(curl --write-out %{response_code} --silent --output /dev/null -u $jira_user:$jira_password -X POST -H "Content-Type: application/json" -d "{\"body\": \"${FORMATTED_JIRA_COMMENT}\"}" https://${jira_url}/rest/api/2/issue/$JIRA_ISSUE/comment)"
 if test "$res" == "201"; then
     echo
