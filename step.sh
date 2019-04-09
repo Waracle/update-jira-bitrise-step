@@ -79,7 +79,7 @@ if [[ "${is_debug}" == "yes" ]]; then
 fi
 
 echo "${FORMATTED_JIRA_COMMENT}"
-res="$(curl --write-out %{response_code} --silent --output /dev/null -u $jira_user:$jira_password -X POST -H "Content-Type: application/json" -d "{\"body\": \"${FORMATTED_JIRA_COMMENT}\"}" https://${jira_url}/rest/api/2/issue/$JIRA_ISSUE/comment)"
+res="$(jq -n -r '{body: env.FORMATTED_JIRA_COMMENT}' | curl --write-out %{response_code} --silent --output /dev/null -u $jira_user:$jira_password -X POST -H "Content-Type: application/json" -d @- https://${jira_url}/rest/api/2/issue/$JIRA_ISSUE/comment)"
 if test "$res" == "201"; then
     echo
     echo "--- Posted comment to jira successfully"

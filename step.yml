@@ -23,9 +23,11 @@ deps:
   brew:
   - name: git
   - name: wget
+  - name: jq
   apt_get:
   - name: git
   - name: wget
+  - name: jq
 run_if: ""
 inputs:
   - jira_url: $JIRA_URL
