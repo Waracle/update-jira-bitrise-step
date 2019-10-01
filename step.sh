@@ -73,13 +73,14 @@ FORMATTED_JIRA_COMMENT="${FORMATTED_JIRA_COMMENT//$'\r\n'/\\n}"
 # convert new line characters to jira-readable newlines
 FORMATTED_JIRA_COMMENT="${FORMATTED_JIRA_COMMENT//$'\n'/\\n}"
 
+printf -v JIRA_BODY "$FORMATTED_JIRA_COMMENT"
+
 if [[ "${is_debug}" == "yes" ]]; then
     echo
-    echo "Formatted JIRA COMMENT: ${FORMATTED_JIRA_COMMENT}"
+    echo "Formatted JIRA BODY: ${JIRA_BODY}"
 fi
 
-echo "${FORMATTED_JIRA_COMMENT}"
-res="$(jq -n -r '{body: env.FORMATTED_JIRA_COMMENT}' | curl --write-out %{response_code} --silent --output /dev/null -u $jira_user:$jira_password -X POST -H "Content-Type: application/json" -d @- https://${jira_url}/rest/api/2/issue/$JIRA_ISSUE/comment)"
+res=$(curl --write-out %{response_code} --silent --output /dev/null -u $jira_user:$jira_password -X POST -H 'Content-Type: application/json' --data "$(jq -n --arg comment_body "$JIRA_BODY" -r '{body: $comment_body}')" https://${jira_url}/rest/api/2/issue/$JIRA_ISSUE/comment)
 if test "$res" == "201"; then
     echo
     echo "--- Posted comment to jira successfully"
